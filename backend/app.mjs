@@ -79,8 +79,8 @@ const io = new Server(server, {
 // create Pomoco session
 
 const pomocoTimer = new PomocoTimer([
-  { description: 'FOCUS', duration: 7 },
-  { description: 'PAUSE', duration: 3 }
+  { description: 'FOCUS', duration: 40*60 },
+  { description: 'PAUSE', duration: 7*60 }
 ])
 const pomocoSession = new PomocoSession(pomocoTimer)
 
