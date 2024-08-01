@@ -19,6 +19,29 @@ export default function Timer() {
     finishSound.src = "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA"
     finishSound.autoplay = true
     
+
+    useEffect(() => {
+        secondTicker.current = new Worker(new URL('../workers/secondTicker.js', import.meta.url))
+        secondTicker.current.onmessage = (_tick) => {
+            console.log('tick')
+            setRemaining(prevRemaining => {
+                if(prevRemaining === 0) {
+                    stop()
+                    return prevRemaining
+                }
+                return prevRemaining - 1
+            })
+        }
+
+        if('Notification' in window && Notification.permission === 'granted') {
+            setMayNotify(true)
+        }
+
+        return () => {
+            secondTicker.current.terminate()
+        }
+    }, [])
+
     
     useEffect(() => {
         if(socket) {
@@ -27,7 +50,7 @@ export default function Timer() {
                 setDescription(status.description)
                 if(secondTicker.current) {
                     setIsRunning(status.isRunning)
-                    secondTicker.current.postMessage(isRunning ? 'start' : 'stop')
+                    secondTicker.current.postMessage(status.isRunning ? 'start' : 'stop')
                 } else {
                     setIsRunning(false)
                 }
@@ -51,26 +74,6 @@ export default function Timer() {
         }
     }, [socket])
     
-    useEffect(() => {
-        secondTicker.current = new Worker(new URL('../workers/secondTicker.js', import.meta.url))
-        secondTicker.current.onmessage = (_tick) => {
-            setRemaining(prevRemaining => {
-                if(prevRemaining === 0) {
-                    stop()
-                    return prevRemaining
-                }
-                return prevRemaining - 1
-            })
-        }
-
-        if('Notification' in window && Notification.permission === 'granted') {
-            setMayNotify(true)
-        }
-
-        return () => {
-            secondTicker.current.terminate()
-        }
-    }, [])
 
     function emitToggle() {
         if(socket) socket.emit('toggleTimer')
