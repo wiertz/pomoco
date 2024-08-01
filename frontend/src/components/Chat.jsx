@@ -28,6 +28,8 @@ export default function Chat() {
                     return <p key={m.key}>{`${m.name} (${m.time}): ${m.message}`}</p>
                 }))
             })
+
+            return () => socket.off('updateMessages')
         }
     }, [socket])
 

@@ -42,6 +42,7 @@ export default function Timer() {
     
             return () => {
                 socket.off('updateTimer')
+                socket.off('timerFinished')
             }
         }
     }, [socket])
