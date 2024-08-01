@@ -1,0 +1,146 @@
+/*
+  Josh's Custom CSS Reset
+  https://www.joshwcomeau.com/css/custom-css-reset/
+*/
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+* {
+  margin: 0;
+}
+body {
+  line-height: 1;
+}
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+input, button, textarea, select {
+  font: inherit;
+}
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+#root, #__next {
+  isolation: isolate;
+}
+
+
+
+html {
+font-family: 'Courier New', Courier, monospace;
+}
+
+#root {
+height: 100vh;
+padding: 1rem;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+#names {
+width: 100%;
+height: 15vh;
+display: flex;
+flex-direction: column;
+flex-wrap: wrap-reverse;
+align-content: flex-start;
+column-gap: 1.5rem;
+color: #666;
+}
+
+#names > p {
+margin: 0.1rem 0;
+max-width: 8rem;
+text-align: right;
+}
+
+#enter-name {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+#enter-name > input {
+  text-align: center;
+  width: 60vh;
+  font-size: 2rem;
+  padding: 0.5rem;
+  background-color: #eee;
+  border-radius: 0.3rem;
+  margin-top: 5rem;
+  margin-bottom: 0.5rem;
+}
+
+#enter-name > label {
+  text-align: center;
+  padding: 0 0.5rem;
+  font-size: 1.5rem;
+  color: white;
+  width: 60vw;
+}
+
+#timer {
+height: 60vh;
+width: 60vh;
+border: 0.5rem solid black;
+border-radius: 100%;
+display: flex;
+flex-direction: column;
+flex-wrap: nowrap;
+justify-content: flex-end;
+align-items: center;
+font-size: 7vh;
+padding-bottom: 5vh;
+margin-bottom: 1rem;
+}
+
+#remaining {
+font-size: 1.8em;
+margin-bottom: 0.4em;
+}
+
+#controls {
+font-size: 0.6em;
+margin-bottom: 1em;
+}
+
+.control:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+#notifications {
+font-size: 0.3em;
+text-align: center;
+}
+
+#messages {
+width: 100%;
+margin-top: auto;
+font-size: 0.9rem;
+color: #666;
+}
+
+input {
+margin-top: 0.3rem;
+font-size: 0.9rem;
+border: 0;
+padding: 0;
+outline: none;
+width: 100%;
+}
+
+input:focus {
+outline: none;
+}
