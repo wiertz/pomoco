@@ -83,9 +83,9 @@ export default function Timer() {
     }
 
     function formatTime(seconds) {
-        const hh = Math.round(seconds / 60).toString().padStart(2, '0')
-        const mm = (seconds % 60).toString().padStart(2, '0')
-        return(`${hh}:${mm}`)
+        const mm = Math.floor(seconds / 60).toString().padStart(2, '0')
+        const ss = (seconds % 60).toString().padStart(2, '0')
+        return(`${mm}:${ss}`)
     }
     
     function requestNotificationPermission() {
