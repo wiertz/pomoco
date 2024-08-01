@@ -8,27 +8,31 @@ import finishSoundUrl from '../assets/tada.mp3'
 export default function Timer() {
 
     const socket = useSocket()
-    const intervalRef = useRef(null)
     const [remaining, setRemaining] = useState(0)
     const [description, setDescription] = useState('----')
     const [isRunning, setIsRunning] = useState(false)
     const [mayNotify, setMayNotify] = useState(false)
-
+    const secondTicker = useRef(null)
+    
     // init finishSound
     const finishSound = new Audio()
     finishSound.src = "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA"
     finishSound.autoplay = true
     
-
+    
     useEffect(() => {
         if(socket) {
             socket.on('updateTimer', (status) => {
-                setIsRunning(status.isRunning)
                 setRemaining(status.remaining)
                 setDescription(status.description)
-                status.isRunning ? start() : stop()
+                if(secondTicker.current) {
+                    setIsRunning(status.isRunning)
+                    secondTicker.current.postMessage(isRunning ? 'start' : 'stop')
+                } else {
+                    setIsRunning(false)
+                }
             })
-
+            
             socket.on('timerFinished', () => {
                 finishSound.src = finishSoundUrl
                 const messageIdx = Math.floor(Math.random() * finishMessages.length)
@@ -39,41 +43,34 @@ export default function Timer() {
                     )
                 }
             })
-    
+            
             return () => {
                 socket.off('updateTimer')
                 socket.off('timerFinished')
             }
         }
     }, [socket])
-
+    
     useEffect(() => {
-        if('Notification' in window && Notification.permission === 'granted') {
-            setMayNotify(true)
-        }
-    })
-
-    function start() {
-        if(intervalRef.current) return
-        intervalRef.current = setInterval(() => {
+        secondTicker.current = new Worker(new URL('../workers/secondTicker.js', import.meta.url))
+        secondTicker.current.onmessage = (_tick) => {
             setRemaining(prevRemaining => {
-                if(prevRemaining == 0) {
+                if(prevRemaining === 0) {
                     stop()
                     return prevRemaining
                 }
                 return prevRemaining - 1
             })
-        }, 1000)
-        setIsRunning(true)
-    }
-
-    function stop() {
-        if(intervalRef.current) {
-            clearInterval(intervalRef.current)
-            intervalRef.current = null
         }
-        setIsRunning(false)
-    }
+
+        if('Notification' in window && Notification.permission === 'granted') {
+            setMayNotify(true)
+        }
+
+        return () => {
+            secondTicker.current.terminate()
+        }
+    }, [])
 
     function emitToggle() {
         if(socket) socket.emit('toggleTimer')

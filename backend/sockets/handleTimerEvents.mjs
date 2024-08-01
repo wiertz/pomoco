@@ -7,11 +7,6 @@ function handleTimerEvents(io, timer) {
     io.emit('updateTimer', timer.getStatus())
   })
 
-  timer.events.on('update', () => {
-    // sent every 10 seconds to keep in sync
-    io.emit('updateTimer', timer.getStatus())
-  })
-
   io.on('connection', (socket) => {
     socket.on('toggleTimer', () => {
       timer.isRunning() ? timer.stop() : timer.start()
