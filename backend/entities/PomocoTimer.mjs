@@ -25,6 +25,10 @@ class PomocoTimer {
                 this.stop()
                 this.events.emit('finished')
             }
+            if(this.remaining % 10 == 0) {
+                // send every 10 seconds to keep in sync
+                this.events.emit('update')
+            }
         }, 1000)
     }
     stop() {
