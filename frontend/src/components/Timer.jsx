@@ -23,7 +23,6 @@ export default function Timer() {
     useEffect(() => {
         secondTicker.current = new Worker(new URL('../workers/secondTicker.js', import.meta.url))
         secondTicker.current.onmessage = (_tick) => {
-            console.log('tick')
             setRemaining(prevRemaining => {
                 if(prevRemaining === 0) {
                     stop()
