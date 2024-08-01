@@ -12,8 +12,8 @@ import cors from 'cors'
 import { PomocoSession } from './entities/PomocoSession.mjs'
 import { PomocoTimer } from './entities/PomocoTimer.mjs'
 
-import { handleSession } from './sockets/handleSession.mjs'
-import { handleTimer } from './sockets/handleTimer.mjs'
+import { handleSessionEvents } from './sockets/handleSessionEvents.mjs'
+import { handleTimerEvents } from './sockets/handleTimerEvents.mjs'
 
 
 
@@ -79,16 +79,15 @@ const io = new Server(server, {
 // create Pomoco session
 
 const pomocoTimer = new PomocoTimer([
-  { description: 'FOCUS', duration: 40*60 },
-  { description: 'PAUSE', duration: 7*60 }
+  { description: 'FOCUS', duration: 7 },
+  { description: 'PAUSE', duration: 3 }
 ])
 const pomocoSession = new PomocoSession(pomocoTimer)
 
 
-io.on('connection', socket => {
-  handleSession(io, socket, pomocoSession)
-  handleTimer(io, socket, pomocoSession)
-})
+handleSessionEvents(io, pomocoSession)
+handleTimerEvents(io, pomocoTimer)
+
 
 
 // start server
