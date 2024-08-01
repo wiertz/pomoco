@@ -1,6 +1,8 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { io } from 'socket.io-client'
 
+import { SOCKET_SERVER_URL, USE_CORS } from '../config'
+
 const SocketContext = createContext()
 
 export const useSocket = () => {
@@ -11,7 +13,7 @@ export const SocketProvider = ({ children }) => {
     const [socket, setSocket] = useState(null)
 
     useEffect(() => {
-        const newSocket = io('http://localhost:3000', { withCredentials: true })
+        const newSocket = io(SOCKET_SERVER_URL, { withCredentials: USE_CORS === 'TRUE' })
         setSocket(newSocket)
 
         return () => newSocket.close()
