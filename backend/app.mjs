@@ -42,10 +42,10 @@ if(SSL_KEY && SSL_CERT && SSL_CHAIN) {
 
 const app = express()
 app.use(cors({ origin: 'http://localhost:5173' }))
-app.use(express.static(ROOT))
-app.get('/', (req, res) => {
-  res.sendFile(path.join(ROOT, 'index.html'))
-})
+app.use(express.static(FRONTEND))
+// app.get('/', (req, res) => {
+//   res.sendFile(path.join(ROOT, 'index.html'))
+// })
 
 let server
 if(HTTPS_OPTIONS) {
