@@ -19,7 +19,7 @@ import { handleTimer } from './sockets/handleTimer.mjs'
 
 // setup constants
 
-const ROOT = process.env.ROOT
+const FRONTEND = process.env.FRONTEND
 const PORT = process.env.PORT
 const CORS_ORIGIN = process.env.CORS_ORIGIN
 const SSL_KEY = process.env.SSL_KEY
